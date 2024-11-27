@@ -1,0 +1,1 @@
+{"root":["./src/drizzel.config.ts","./src/server.ts","./src/drizzel/index.ts","./src/drizzel/schema.ts","./src/dtos/addexec.dto.ts","./src/routes/exec.ts"],"version":"5.7.2"}

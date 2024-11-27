@@ -1,0 +1,28 @@
+{
+  "name": "mattubackend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "start": "node ./dist/server.js",
+    "start:dev": "nodemon ./src/server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.36.4",
+    "express": "^4.21.1",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "drizzle-kit": "^0.28.1",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
