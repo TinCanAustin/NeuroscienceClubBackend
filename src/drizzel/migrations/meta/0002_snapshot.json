@@ -1,6 +1,6 @@
 {
-  "id": "ae58ee56-4c25-47c3-b613-fb1f845486bc",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "3c06ba8a-88bc-4a5f-aa09-e2dcb260239d",
+  "prevId": "137ea593-70fe-4ac1-997a-9959de62fcb2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -26,8 +26,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
+        "linkedin": {
+          "name": "linkedin",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -36,15 +36,7 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "exec_email_unique": {
-          "name": "exec_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

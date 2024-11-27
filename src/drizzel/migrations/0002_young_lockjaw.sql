@@ -1,0 +1,1 @@
+ALTER TABLE "exec" DROP CONSTRAINT "exec_linkedin_unique";

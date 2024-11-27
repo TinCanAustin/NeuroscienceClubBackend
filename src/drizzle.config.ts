@@ -7,7 +7,7 @@ config({
 
 export default defineConfig({
     schema: "./drizzel/schema.ts",
-    out: "./src/drizzle/migrations",
+    out: "./drizzel/migrations",
     dialect: "postgresql",
     dbCredentials: {
         url: process.env.DATABASE_URL as string,
