@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";  
-import { addExecType } from "../dtos/addExec.dto";
+import { addExecType, idExecParamType } from "../dtos/Exec.dto";
 import { insertExec} from "../drizzel/query";
 import { exec, execTable } from "../drizzel/schema";
 
@@ -27,7 +27,7 @@ userRouter
             try{
                 await insertExec(newExec);
                 // await insertExecTry(name, stream, url!);
-                res.status(200).json({'error': false, 'message': "kys"});
+                res.status(200).json({'error': false, 'message': "added sucessfully"});
             }catch (err){
                 console.log(err);
                 res.status(500).json({'error': true, 'message': "Internal error"});
@@ -37,5 +37,19 @@ userRouter
         }
     }
 )
+
+userRouter
+.route("/delete/:id")
+.post(
+    async (req: Request<idExecParamType>, res : Response)=>{
+        const exec_id = req.params.id;
+
+        console.log(exec_id);
+
+        res.status(200).json({error: false, message: "deleted successfully"});
+    }
+)
+
+
 
 export default userRouter;

@@ -8,5 +8,5 @@ export async function insertExec(_exec : exec){
 }
 
 export async function deleteExec(id: number) {
-    await db.delete(execTable).where(eq(execTable.id, id));
+    return db.delete(execTable).where(eq(execTable.id, id)).returning();
 }

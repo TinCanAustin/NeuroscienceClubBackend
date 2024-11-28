@@ -1,7 +1,10 @@
 export interface addExecType{
-    id: number,
     name: string,
     stream: string,
     position: string,
     linkedin?: string
+}
+
+export interface idExecParamType{
+    id: number;
 }
