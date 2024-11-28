@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";  
 import { addExecType } from "../dtos/addExec.dto";
-import { insertExec } from "../drizzel/query";
-import { exec } from "../drizzel/schema";
+import { insertExec} from "../drizzel/query";
+import { exec, execTable } from "../drizzel/schema";
 
 const userRouter = Router();
 
@@ -26,6 +26,7 @@ userRouter
             
             try{
                 await insertExec(newExec);
+                // await insertExecTry(name, stream, url!);
                 res.status(200).json({'error': false, 'message': "kys"});
             }catch (err){
                 console.log(err);
