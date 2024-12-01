@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const execTable = pgTable("exec", {
     id: serial('id').primaryKey(),
@@ -7,4 +7,8 @@ export const execTable = pgTable("exec", {
     linkedin: text("linkedin")
 });
 
-export type exec = Omit<typeof execTable.$inferInsert, "id">;
+export const eventsTable = pgTable("events", {
+    id: uuid('id').defaultRandom().primaryKey(),
+});
+
+export type exec = typeof execTable.$inferInsert;
