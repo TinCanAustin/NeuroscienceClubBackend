@@ -75,7 +75,7 @@ userRouter
 
 userRouter
 .route("/get")
-.post(
+.get(
     (req: Request, res: Response)=>{
         res.status(400).json({error: true, message: "Please enter a vaild ID"});
     }
@@ -83,7 +83,7 @@ userRouter
 
 userRouter
 .route("/get/:id")
-.post(
+.get(
     async (req: Request<idExecParamType>, res : Response)=>{
         try{
             const exec_id = req.params.id;

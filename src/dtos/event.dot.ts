@@ -5,3 +5,6 @@ export interface addEventType{
     bannerURL: string
 }
 
+export interface idEventParam{
+    id: string
+}

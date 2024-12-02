@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { addEventType } from "../dtos/event.dot";
+import { addEventType, idEventParam } from "../dtos/event.dot";
 import { event } from "../drizzel/schema";
-import { insertEvent } from "../drizzel/query";
+import { getEventPhoto, insertEvent } from "../drizzel/query";
 
 const eventRouter = Router();
 
@@ -35,5 +35,22 @@ eventRouter.post("/add",
         }
     }
 );
+
+eventRouter
+.route("/images/:id")
+.get(
+    async (req: Request<idEventParam>, res: Response)=>{
+        const id = req.params.id;
+        
+        try{
+            const images = await getEventPhoto(id);
+
+            res.status(200).json({error: false, message: "events photos fetched", images: images[0].image})
+        }catch(err){
+            console.log(err);
+            res.status(500).json({error: true, message: "error", error_message: err});
+        }
+    }
+)
 
 export default eventRouter;
