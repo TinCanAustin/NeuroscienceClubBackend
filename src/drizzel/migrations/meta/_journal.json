@@ -29,6 +29,20 @@
       "when": 1733031577965,
       "tag": "0003_lively_shaman",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1733125147874,
+      "tag": "0004_familiar_cardiac",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1733126050269,
+      "tag": "0005_supreme_deathstrike",
+      "breakpoints": true
     }
   ]
 }

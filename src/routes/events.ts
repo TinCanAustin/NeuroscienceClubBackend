@@ -9,6 +9,7 @@ eventRouter.post("/add",
     async (req: Request<{}, {}, addEventType>, res: Response)=>{
         const name = req.body.name;
         const date = req.body.date;
+        const description = req.body.description;
         const status = req.body.status;
         const bannerURL = req.body.bannerURL;
 
@@ -22,7 +23,7 @@ eventRouter.post("/add",
                     throw "invalid data type or date formate";
                 };
 
-                const event: Omit<Omit<event, "id">, "eventImage"> = {name: name, date: _date, stauts: status, bannerURL: bannerURL};
+                const event: Omit<Omit<event, "id">, "eventImage"> = {name: name, date: _date, stauts: status, bannerURL: bannerURL, description: description || ""};
                 await insertEvent(event);
                 
                 res.status(200).json({error: false, message: "Event added succesfully"});

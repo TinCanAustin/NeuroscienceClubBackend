@@ -12,6 +12,7 @@ export const eventsTable = pgTable("events", {
     id: uuid('id').defaultRandom().primaryKey(),
     name: text('event name').notNull(),
     date: date("date", {mode: "date"}).notNull(),
+    description: text("description").notNull(),
     stauts: boolean("event status").default(sql`FALSE`).notNull(),
     bannerURL: text("banner url").notNull(),
     eventImage: text("images").array().default(sql`ARRAY[]::text[]`).notNull()
