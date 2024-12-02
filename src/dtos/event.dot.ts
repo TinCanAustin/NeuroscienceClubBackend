@@ -8,3 +8,8 @@ export interface addEventType{
 export interface idEventParam{
     id: string
 }
+
+
+export interface addImageType{
+    url: string
+}

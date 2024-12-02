@@ -6,5 +6,5 @@ export interface addExecType{
 }
 
 export interface idExecParamType{
-    id: number;
+    id: number
 }

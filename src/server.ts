@@ -11,7 +11,7 @@ app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
 });
 
-app.use('/exec', userRouter);
+app.use('/execs', userRouter);
 app.use('/event', eventRouter);
 
 app.listen(3000, ()=>{

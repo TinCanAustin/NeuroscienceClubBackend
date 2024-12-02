@@ -21,3 +21,7 @@ export async function insertEvent(_event : Omit<Omit<event, "id">, "eventImage">
 export async function getEventPhoto(_id: string){
     return await db.select({image: eventsTable.eventImage}).from(eventsTable).where(eq(eventsTable.id, _id));
 }
+
+export async function addEventImage(_id:string, _array: string[]) {
+    await db.update(eventsTable).set({eventImage: _array}).where(eq(eventsTable.id, _id));
+}

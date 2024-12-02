@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { addEventType, idEventParam } from "../dtos/event.dot";
+import { addEventType, idEventParam, addImageType } from "../dtos/event.dot";
 import { event } from "../drizzel/schema";
-import { getEventPhoto, insertEvent } from "../drizzel/query";
+import { addEventImage, getEventPhoto, insertEvent } from "../drizzel/query";
 
 const eventRouter = Router();
 
@@ -45,6 +45,11 @@ eventRouter
         try{
             const images = await getEventPhoto(id);
 
+            if(images.length == 0){
+                res.status(400).json({error: false, message: "id not found"});
+                return;
+            }
+
             res.status(200).json({error: false, message: "events photos fetched", images: images[0].image})
         }catch(err){
             console.log(err);
@@ -52,5 +57,28 @@ eventRouter
         }
     }
 )
+.post(
+    async (req: Request<idEventParam, {}, addImageType>, res: Response)=>{
+        const id = req.params.id;
+        const url = req.body.url;
+
+        try{
+            const images_quary = await getEventPhoto(id);
+            if(images_quary.length == 0){
+                res.status(400).json({error: false, message: "id not found"});
+                return;
+            }
+
+            const images = images_quary[0].image;
+            images.push(url);
+
+            await addEventImage(id, images);
+            res.status(200).json({error: false, message: "Image added to event"})
+        }catch(err){
+            console.log(err);
+            res.status(500).json({error: true, message: "error", error_message: err});
+        }
+    }
+);
 
 export default eventRouter;
