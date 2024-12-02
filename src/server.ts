@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import userRouter from './routes/exec';
+import eventRouter from './routes/events';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.get("/", (req : Request, res : Response)=>{
 });
 
 app.use('/exec', userRouter);
+app.use('/event', eventRouter);
 
 app.listen(3000, ()=>{
     console.log("Ola camosa");
