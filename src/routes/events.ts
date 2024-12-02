@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { addEventType, idEventParam, addImageType } from "../dtos/event.dot";
 import { event } from "../drizzel/schema";
-import { addEventImage, getEventPhoto, insertEvent } from "../drizzel/query";
+import { addEventImage, deleteEvent, getEventPhoto, insertEvent } from "../drizzel/query";
 
 const eventRouter = Router();
 
@@ -80,5 +80,25 @@ eventRouter
         }
     }
 );
+
+eventRouter.post("/delete/:id", 
+    async (req: Request<idEventParam>, res: Response)=>{
+        try{
+            const _id = req.params.id;       
+
+            const deleted = await deleteEvent(_id);
+
+            if(deleted.length == 0){
+                res.status(400).json({error: true, message: "Exec not found."});
+                return;
+            }
+
+            res.status(200).json({error: false, message: "deleted successfully", deleted_event : deleted});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({error: true, message: "Internal error", error_message: err});
+        }
+    }
+)
 
 export default eventRouter;

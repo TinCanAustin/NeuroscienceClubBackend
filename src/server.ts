@@ -12,7 +12,7 @@ app.get("/", (req : Request, res : Response)=>{
 });
 
 app.use('/execs', userRouter);
-app.use('/event', eventRouter);
+app.use('/events', eventRouter);
 
 app.listen(3000, ()=>{
     console.log("Ola camosa");

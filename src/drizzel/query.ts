@@ -25,3 +25,7 @@ export async function getEventPhoto(_id: string){
 export async function addEventImage(_id:string, _array: string[]) {
     await db.update(eventsTable).set({eventImage: _array}).where(eq(eventsTable.id, _id));
 }
+
+export async function deleteEvent(_id: string){
+    return await db.delete(eventsTable).where(eq(eventsTable.id, _id)).returning();
+}
