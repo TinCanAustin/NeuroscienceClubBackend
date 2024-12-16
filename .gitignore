@@ -1,4 +1,4 @@
 node_modules
 
 src/.env
-src/drizzel/migrations
+src/drizzel/migrations/
