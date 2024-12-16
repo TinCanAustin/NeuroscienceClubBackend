@@ -19,5 +19,13 @@ export const eventsTable = pgTable("events", {
     eventImage: text("images").array().default(sql`ARRAY[]::text[]`).notNull()
 });
 
+export const announcementTable = pgTable("announcements", {
+    id: uuid('id').defaultRandom().primaryKey(),
+    heading: text('heading').notNull(),
+    date: date("date", {mode: "date"}).notNull(),
+    body: text("body").notNull()
+}); 
+
 export type exec = typeof execTable.$inferInsert;
 export type event = typeof eventsTable.$inferInsert;
+export type announcement = typeof announcementTable.$inferInsert;

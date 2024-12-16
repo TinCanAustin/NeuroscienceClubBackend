@@ -1,7 +1,8 @@
 import { count, eq } from "drizzle-orm";
 import { db } from "./index";
-import { exec, execTable, event, eventsTable } from "./schema";
+import { exec, execTable, event, eventsTable, announcement, announcementTable } from "./schema";
 
+//execs
 export async function insertExec(_exec : Omit<exec, "id">){
     await db.insert(execTable).values(_exec);
 }
@@ -14,6 +15,7 @@ export async function getExec(id: string){
     return db.select().from(execTable).where(eq(execTable.id, id));
 }
 
+//events 
 export async function insertEvent(_event : Omit<Omit<event, "id">, "eventImage">){
     await db.insert(eventsTable).values(_event);
 }
@@ -28,4 +30,21 @@ export async function addEventImage(_id:string, _array: string[]) {
 
 export async function deleteEvent(_id: string){
     return await db.delete(eventsTable).where(eq(eventsTable.id, _id)).returning();
+}
+
+//announcments
+export async function addAnnouncement(_announcement : Omit<announcement, "id">) {
+    await db.insert(announcementTable).values(_announcement);
+}
+
+export async function getAnnouncements() {
+    return await db.select().from(announcementTable);
+}
+
+export async function getAnnouncement(id:string) {
+    return await db.select().from(announcementTable).where(eq(announcementTable.id, id));
+}
+
+export async function deleteAnnouncement(id:string) {
+    return await db.delete(announcementTable).where(eq(announcementTable.id, id)).returning();
 }
