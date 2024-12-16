@@ -12,6 +12,7 @@ userRouter
         const name = req.body.name;
         const stream = req.body.stream;
         const url = req.body.linkedin;
+        const pfp = req.body.profilePic;
 
         if(name != undefined && stream != undefined){
             
@@ -19,9 +20,9 @@ userRouter
 
             if(url != undefined && url != null){
                 newExec.linkedin = url;
-                console.log(`User is ${name}, from ${stream} with link ${url}`);
-            }else{
-                console.log(`User is ${name}, from ${stream}`);
+            }
+            if(pfp != undefined && pfp != null){
+                newExec.profilePic = pfp;
             }
             
             try{
@@ -52,13 +53,8 @@ userRouter
     async (req: Request<idExecParamType>, res : Response)=>{
         try{
             const exec_id = req.params.id;
-            
-            if(!Number(exec_id)){
-                res.status(400).json({error: true, message: "Please Enter a vaild id"});
-                return;
-            }
 
-            const deleted : exec[] = await deleteExec(Number(exec_id));
+            const deleted : exec[] = await deleteExec(exec_id);
 
             if(deleted.length == 0){
                 res.status(400).json({error: true, message: "Exec not found."});
@@ -88,19 +84,14 @@ userRouter
         try{
             const exec_id = req.params.id;
             
-            if(!Number(exec_id)){
-                res.status(400).json({error: true, message: "Please Enter a vaild id"});
-                return;
-            }
-            
-            const user = await getExec(Number(exec_id));
+            const user = await getExec(exec_id);
             
             if( user.length == 0 ){
                 res.status(400).json({error: true, message: "Exec not found."});
                 return;
             }
 
-            res.status(200).json({error: false, message: "exec found", user: user});
+            res.status(200).json({error: false, message: "exec found", user: user[0]});
         }catch(err){
             console.log(err);
             res.status(500).json({error: true, message: "Internal error", error_message: err});

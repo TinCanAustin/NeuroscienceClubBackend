@@ -3,8 +3,9 @@ export interface addExecType{
     stream: string,
     position: string,
     linkedin?: string
+    profilePic?: string
 }
 
 export interface idExecParamType{
-    id: number
+    id: string
 }

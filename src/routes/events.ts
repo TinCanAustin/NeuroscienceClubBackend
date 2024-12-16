@@ -63,6 +63,11 @@ eventRouter
         const id = req.params.id;
         const url = req.body.url;
 
+        if(url == undefined){
+            res.status(400).json({error: false, message: "please enter a url"});
+            return;
+        }
+
         try{
             const images_quary = await getEventPhoto(id);
             if(images_quary.length == 0){

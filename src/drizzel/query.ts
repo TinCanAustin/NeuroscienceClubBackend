@@ -6,11 +6,11 @@ export async function insertExec(_exec : Omit<exec, "id">){
     await db.insert(execTable).values(_exec);
 }
 
-export async function deleteExec(id: number) : Promise<exec[]>{
+export async function deleteExec(id: string) : Promise<exec[]>{
     return db.delete(execTable).where(eq(execTable.id, id)).returning();
 }
 
-export async function getExec(id: number){
+export async function getExec(id: string){
     return db.select().from(execTable).where(eq(execTable.id, id));
 }
 

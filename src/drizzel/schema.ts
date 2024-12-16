@@ -2,10 +2,11 @@ import { sql } from "drizzle-orm";
 import { pgTable, serial, text, uuid, varchar, date, boolean } from "drizzle-orm/pg-core";
 
 export const execTable = pgTable("exec", {
-    id: serial('id').primaryKey(),
+    id: uuid('id').defaultRandom().primaryKey(),
     name: text("name").notNull(),
     stream: text("stream").notNull(),
-    linkedin: text("linkedin")
+    linkedin: text("linkedin"),
+    profilePic: text("profile pic"),
 });
 
 export const eventsTable = pgTable("events", {
