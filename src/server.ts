@@ -3,6 +3,7 @@ import path from 'path';
 import userRouter from './routes/exec';
 import eventRouter from './routes/events';
 import announcementRouter from './routes/announcemnets';
+import authRouter from './routes/auth';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
 });
 
+app.use('/auth', authRouter);
 app.use('/execs', userRouter);
 app.use('/events', eventRouter);
 app.use('/announcement', announcementRouter);
