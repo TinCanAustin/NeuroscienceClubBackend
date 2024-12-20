@@ -1,9 +1,53 @@
 import { Request, Response, Router } from "express";
 import { addEventType, idEventParam, addImageType } from "../dtos/event.dot";
 import { event } from "../drizzel/schema";
-import { addEventImage, deleteEvent, getEventPhoto, insertEvent } from "../drizzel/query";
+import { addEventImage, deleteEvent, getEvent, getEventPhoto, getEvents, insertEvent } from "../drizzel/query";
 
 const eventRouter = Router();
+
+eventRouter.get('/',
+    async (req: Request, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
+        try{
+            const events = await getEvents();
+            if(events.length == 0){
+                res.status(204).json({'error': true, 'message': "No events in db"});
+                return;
+            }
+            res.status(200).json({'error': false, 'events': events});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({'error': true, 'message': 'internal error'})
+        }
+    }
+)
+
+eventRouter.get('/:id',
+    async (req: Request<idEventParam>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+        const id = req.params.id;
+        try{
+            const event = await getEvent(id);
+            if(event.length == 0){
+                res.status(400).json({'error': true, 'message': "Event not found"});
+                return;
+            }
+            res.status(200).json({'error': false, 'event': event[0]});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({'error': true, 'message': 'internal error'})
+        }
+    }
+)
 
 eventRouter.post("/add", 
     async (req: Request<{}, {}, addEventType>, res: Response)=>{

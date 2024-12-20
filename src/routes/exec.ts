@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";  
 import { addExecType, idExecParamType } from "../dtos/Exec.dto";
-import { deleteExec, getExec, insertExec} from "../drizzel/query";
+import { deleteExec, getExec, getExecs, insertExec} from "../drizzel/query";
 import { exec, execTable } from "../drizzel/schema";
 
 const userRouter = Router();
@@ -87,20 +87,30 @@ userRouter
 )
 
 userRouter
-.route("/get")
+.route("/")
 .get(
-    (req: Request, res: Response)=>{
+    async (req: Request, res: Response)=>{
         // @ts-ignore
         if(!req.session.auth){
             res.status(401).json({'error': true, 'message': "No autherization"});
             return;
         };
-        res.status(400).json({error: true, message: "Please enter a vaild ID"});
+        try{
+            const execs = await getExecs();
+            if(execs.length == 0){
+                res.status(204).json({'error': true, 'message': "No execs in db"});
+                return;
+            }
+            res.status(200).json({'error': false, 'execs': execs});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({'error': true, 'message': 'internal error'})
+        }
     }
 )
 
 userRouter
-.route("/get/:id")
+.route("/:id")
 .get(
     async (req: Request<idExecParamType>, res : Response)=>{
         // @ts-ignore
@@ -118,7 +128,7 @@ userRouter
                 return;
             }
 
-            res.status(200).json({error: false, message: "exec found", user: user[0]});
+            res.status(200).json({error: false, user: user[0]});
         }catch(err){
             console.log(err);
             res.status(500).json({error: true, message: "Internal error", error_message: err});

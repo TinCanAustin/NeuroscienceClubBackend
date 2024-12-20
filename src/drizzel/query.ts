@@ -15,6 +15,10 @@ export async function getExec(id: string){
     return db.select().from(execTable).where(eq(execTable.id, id));
 }
 
+export async function getExecs() {
+    return await db.select().from(execTable);
+}
+
 //events 
 export async function insertEvent(_event : Omit<Omit<event, "id">, "eventImage">){
     await db.insert(eventsTable).values(_event);
@@ -30,6 +34,14 @@ export async function addEventImage(_id:string, _array: string[]) {
 
 export async function deleteEvent(_id: string){
     return await db.delete(eventsTable).where(eq(eventsTable.id, _id)).returning();
+}
+
+export async function getEvents() {
+    return await db.select().from(eventsTable);
+}
+
+export async function getEvent(_id: string) {
+    return await db.select().from(eventsTable).where(eq(eventsTable.id, _id));
 }
 
 //announcments
