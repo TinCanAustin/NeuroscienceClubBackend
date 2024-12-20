@@ -16,7 +16,9 @@ authRouter.post("/",
             res.status(401).json({"error" : true, "message" : "invalid username or password"});
             return;
         }
-
+        // console.log(req.session.id);
+        //@ts-ignore
+        req.session.auth = true;
         res.status(200).json({"error": false, "message": "Login sucessful"});
     }
 );

@@ -7,6 +7,11 @@ const announcementRouter = Router();
 
 announcementRouter.get("/", 
     async (req: Request, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
         try{
             const announcements = await getAnnouncements();
             res.status(200).json({'error': false, 'announcements' : announcements});
@@ -19,10 +24,19 @@ announcementRouter.get("/",
 
 announcementRouter.get("/:id", 
     async (req: Request<announcementParam>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
         const id = req.params.id;
         try{
             const announcements = await getAnnouncement(id);
-            res.status(200).json({'error': false, 'announcements' : announcements[0]});
+            if(announcements.length == 0){
+                res.status(201).json({'error': true, 'announcements' : "Announcement not found"});
+            }else{
+                res.status(200).json({'error': false, 'announcements' : announcements[0]});
+            }
         }catch(err){
             console.log(err);
             res.status(500).json({'error': true, 'message': 'internal error'})
@@ -32,6 +46,12 @@ announcementRouter.get("/:id",
 
 announcementRouter.post('/add',
     async (req: Request<{}, {}, announcementAddType>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const heading = req.body.heading;
         const body = req.body.body;
 
@@ -54,6 +74,12 @@ announcementRouter.post('/add',
 
 announcementRouter.post("/delete/:id", 
     async (req: Request<announcementParam>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const id = req.params.id;
         try{
             const deleted : announcement[] = await deleteAnnouncement(id);

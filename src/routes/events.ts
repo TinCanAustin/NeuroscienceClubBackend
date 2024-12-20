@@ -7,6 +7,12 @@ const eventRouter = Router();
 
 eventRouter.post("/add", 
     async (req: Request<{}, {}, addEventType>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const name = req.body.name;
         const date = req.body.date;
         const description = req.body.description;
@@ -41,6 +47,12 @@ eventRouter
 .route("/images/:id")
 .get(
     async (req: Request<idEventParam>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const id = req.params.id;
         
         try{
@@ -60,6 +72,12 @@ eventRouter
 )
 .post(
     async (req: Request<idEventParam, {}, addImageType>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const id = req.params.id;
         const url = req.body.url;
 
@@ -89,6 +107,12 @@ eventRouter
 
 eventRouter.post("/delete/:id", 
     async (req: Request<idEventParam>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         try{
             const _id = req.params.id;       
 

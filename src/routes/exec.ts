@@ -9,6 +9,12 @@ userRouter
 .route("/add")
 .post(
     async (req : Request<{}, {}, addExecType>, res : Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
         const name = req.body.name;
         const stream = req.body.stream;
         const url = req.body.linkedin;
@@ -43,6 +49,11 @@ userRouter
 .route("/delete")
 .post(
     (req: Request, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
         res.status(400).json({error: true, message: "Please enter a vaild ID"});
     }
 )
@@ -51,6 +62,12 @@ userRouter
 .route("/delete/:id")
 .post(
     async (req: Request<idExecParamType>, res : Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+        
         try{
             const exec_id = req.params.id;
 
@@ -73,6 +90,11 @@ userRouter
 .route("/get")
 .get(
     (req: Request, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
         res.status(400).json({error: true, message: "Please enter a vaild ID"});
     }
 )
@@ -81,6 +103,11 @@ userRouter
 .route("/get/:id")
 .get(
     async (req: Request<idExecParamType>, res : Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
         try{
             const exec_id = req.params.id;
             
