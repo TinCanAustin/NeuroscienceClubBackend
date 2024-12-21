@@ -2,6 +2,7 @@
 ## Contribution
 > [!NOTE]
 > This will be changed once we have to present.
+
 **Front Page Dev**: Matt
 **Admin Page Dev**: Han
 **Backend Dev**: Austin 
@@ -9,6 +10,7 @@
 ## About
 > [!NOTE]
 > This will be changed once we have to present
+
 This is the backend for the Neuroscience Club website.
 
 ## Documentation
@@ -18,10 +20,10 @@ This is the backend for the Neuroscience Club website.
 API url: [neuroscienceclubbackend-production.up.railway.app](neuroscienceclubbackend-production.up.railway.app)
 
 ### POST /auth
-**What?**
+**What?**\
 Endpoint to authenticate if the user logging in has the correct credentials to use the API.
 
-**Info**
+**Info**\
 This endpoint takes a JSON containing the `username` and `password`.
 Here are the types:
 ```ts
@@ -36,33 +38,38 @@ Example:
     "username": "username",
     "password": "password"
 }
-This will set a cookie on the admins browser that holds a valid SessionID that valid for 1h. Then the user will have to login again.
 ```
+This will set a cookie on the admins browser that holds a valid SessionID that valid for 1h. Then the user will have to login again.
 
 ### GET /execs
-**What?**
+**What?**\
 Endpoint to get all exec information form the database.
 
-**Info**
+**Info**\
 A basic get request that returns a list of all the execs information.
 
 ### GET /execs/:id
 > [!NOTE]
 > Honestly in my opinion, this if fucking useless. I am planning on removing this feature in the future.
-**What?**
+
+**What?**\
 Endpoint to get specific exec information from the database.
 
-**Info**
+**Info**\
 A get request that returns an object containing the specified user's ID.
 The `:id` is of type *string*.
 
 ### POST /execs/add
-**What?**
+**What?**\
 Endpoint to add a new exec into the database.
 
-**Info**
-This enpoint takes in a JSON containing `name`, `stream`, `postion`. 
-The endpoints also takes in two optional body variables `linkedin` and `profilePic`.
+**Info**\
+This endpoint takes in a JSON containing `name`, `stream`, `postion`. 
+The endpoints also take in two optional body variables `linkedin` and `profilePic`.
+
+> [!NOTE]
+> Later in development, postition will have checks and limited options. More Social Media options will also be added.
+
 Here are the types:
 ```ts
 interface addExecType{
@@ -85,9 +92,78 @@ Example:
 ```
 
 ### POST /execs/delete/:id
-**What?**
-Endpoint to delete an exsisting exec in the database.
+**What?**\
+Endpoint to delete an existing exec in the database.
 
-**Info**
-This endpoint takes the execID and deletes the exec info if the exec info exsists in the database.
+**Info**\
+This endpoint takes the execID and deletes the exec info if the exec info exists in the database.
 The `:id` is of type *string*.
+
+### GET /events
+**What?**\
+Endpoint to get all event information form the database.
+
+**Info**\
+A basic get request that returns a list of all the events.
+
+### GET /events/:id
+**What?**\
+Endpoint to get specific event information from the database.
+
+**Info**\
+A get request that returns an object containing the specified event.\
+The `:id` is of type *string*.
+
+### POST /events/add
+**What?**\
+Endpoint to add a new events into the database.
+
+**Info**\
+This endpoint takes in a JSON containing `name`, `date`, `description`, `status`, `bannerURL`.\
+Here are the types:
+```ts
+interface addEventType{
+    name: string,
+    date: string,
+    description: string,
+    status: boolean,
+    bannerURL: string
+}
+```
+Example:
+```json
+{
+    "name" : "Online Webinar",
+    "date" : "01-05-2025",
+    "description" : "An online webinar about a topic",
+    "status": false,
+    "bannerURL": "www.event.com/img.png"
+}
+```
+
+### GET /events/images/:id
+**What?**\
+Endpoint to get all images added into an event album.
+
+**Info**\
+A get reqest that returns a list all the images added to the event.
+The `:id` is of type *string*.
+
+### POST /events/images/:id
+**What?**\
+Endpoint to insert image into an event album.
+
+**Info**\
+Endpoint takes in a JSON containting a single body variable `url`.\
+Here is the type:
+```ts
+interface addImageType{
+    url: string
+}
+```
+Example:
+```json
+{
+    "url" : "https://www.imagewebsite.com/image.png"
+}
+```
