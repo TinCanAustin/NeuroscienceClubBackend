@@ -5,10 +5,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && tsc --build && npm run copy-files",
+    "build:dev": "npm run clean && tsc --build && npm run copy-files:dev",
     "start": "node ./dist/server.js",
     "start:dev": "nodemon ./src/server.ts",
     "clean": "rimraf dist/",
-    "copy-files": "copyfiles -u 1 src/view/*.html dist/"
+    "copy-files": "copyfiles -u 1 src/view/*.html dist/",
+    "copy-files:dev": "copyfiles -u 1 src/view/*.html src/.env dist/"
   },
   "author": "",
   "license": "ISC",
