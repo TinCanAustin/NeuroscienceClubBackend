@@ -5,6 +5,7 @@ export const execTable = pgTable("exec", {
     id: uuid('id').defaultRandom().primaryKey(),
     name: text("name").notNull(),
     stream: text("stream").notNull(),
+    position: text("position").notNull(),
     linkedin: text("linkedin"),
     profilePic: text("profile pic"),
 });

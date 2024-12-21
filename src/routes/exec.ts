@@ -17,12 +17,13 @@ userRouter
 
         const name = req.body.name;
         const stream = req.body.stream;
+        const position = req.body.position;
         const url = req.body.linkedin;
         const pfp = req.body.profilePic;
 
-        if(name != undefined && stream != undefined){
+        if(name != undefined && stream != undefined && position != undefined){
             
-            const newExec:Omit<exec, "id"> = {name: name, stream: stream};
+            const newExec:Omit<exec, "id"> = {name: name, stream: stream, position: position};
 
             if(url != undefined && url != null){
                 newExec.linkedin = url;
