@@ -3,9 +3,9 @@
 > [!NOTE]
 > This will be changed once we have to present.
 
-**Front Page Dev**: Matt
-**Admin Page Dev**: Han
-**Backend Dev**: Austin 
+**Front Page Dev**: Matt\
+**Admin Page Dev**: Han\
+**Backend Dev**: Austin
 
 ## About
 > [!NOTE]
@@ -146,7 +146,7 @@ Example:
 Endpoint to get all images added into an event album.
 
 **Info**\
-A get reqest that returns a list all the images added to the event.
+A get reqest that returns a list all the images added to the event.\
 The `:id` is of type *string*.
 
 ### POST /events/images/:id
@@ -167,3 +167,48 @@ Example:
     "url" : "https://www.imagewebsite.com/image.png"
 }
 ```
+
+### POST /events/delete/:id
+**What?**\
+Endpoint to delete exsisting event into the database. 
+
+**Info**\
+A post request that deletes an exsisting event. This endpoint does not take any JSON and returns the deleted event. \
+The `:id` is of type *string*.
+
+### GET /announcement
+**What?**\
+Endpoint to get all announcements form the database.
+
+**Info**\
+A basic get request that returns a list of all the announcement.
+
+### GET /announcement/add
+**What?**\
+Endpoint to add a new events into the database.
+
+**Info**\
+This endpoint takes in a JSON containing `heading`, `body`.\
+There is a `date` that recodrs the date and time of when the reqest is sent.\
+Here are the types:
+```ts
+export interface announcementAddType{
+    heading : string,
+    body: string
+}
+```
+Example:
+```json
+{
+    "heading" : "Test Announcemnt 2",
+    "body" : "I dont really know what im doing so bare with me."
+}
+```
+
+### POST /announcement/delete/:id
+**What?**\
+Endpoint to delete exsisting announcemnet into the database. 
+
+**Info**\
+A post request that deletes an exsisting anouncemnts. This endpoint does not take any JSON and returns the deleted announcemnet. \
+The `:id` is of type *string*.
