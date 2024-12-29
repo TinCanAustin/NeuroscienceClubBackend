@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";  
 import { addExecType, idExecParamType } from "../dtos/Exec.dto";
-import { deleteExec, getExec, getExecs, insertExec} from "../drizzel/query";
-import { exec, execTable } from "../drizzel/schema";
+import { createSocials, deleteExec, getExec, getExecs, insertExec} from "../drizzel/query";
+import { exec, exec_socials, execTable } from "../drizzel/schema";
 
 const userRouter = Router();
 
@@ -15,33 +15,58 @@ userRouter
             return;
         };
 
-        const name = req.body.name;
-        const stream = req.body.stream;
-        const position = req.body.position;
-        const url = req.body.linkedin;
-        const pfp = req.body.profilePic;
+        const body = req.body;
+        const requiredKeys = [
+            body.first_name,
+            body.last_name,
+            body.email,
+            body.gender,
+            body.email,
+            body.stream,
+            body.position,
+            body.info,
+        ];
+        const keyCheck = requiredKeys.every(key => key !== undefined);
 
-        if(name != undefined && stream != undefined && position != undefined){
+        if(keyCheck){
             
-            const newExec:Omit<exec, "id"> = {name: name, stream: stream, position: position};
+            let newExec : Omit<exec, "id"> = {
+                first_name: body.first_name,
+                last_name: body.last_name,
+                email: body.email,
+                gender: body.gender,
+                pronouns: body.pronouns,
+                stream: body.stream,
+                position: body.position,
+                info: body.info
+            };
 
-            if(url != undefined && url != null){
-                newExec.linkedin = url;
-            }
-            if(pfp != undefined && pfp != null){
-                newExec.profilePic = pfp;
+            if(body.profilePic !== undefined){
+                newExec.profilePic = body.profilePic;
             }
             
+            let socials : Omit<exec_socials, "id"> = {};
+            if(body.Linkedin !== undefined){
+                socials.Linkedin = body.Linkedin;
+            }
+            if(body.Instagram !== undefined){
+                socials.Instagram = body.Instagram;
+            }
+            if(body.Twitter !== undefined){
+                socials.Twitter = body.Twitter;
+            }
+
             try{
+                let socialReturn = await createSocials(socials);
+                newExec.socialID = socialReturn[0].id;
                 await insertExec(newExec);
-                // await insertExecTry(name, stream, url!);
                 res.status(200).json({'error': false, 'message': "added sucessfully"});
             }catch (err){
                 console.log(err);
                 res.status(500).json({'error': true, 'message': "Internal error", 'error message': err});
             }
         }else{
-            res.status(400).json({'error': true, 'message': "wat are you doing"});
+            res.status(400).json({'error': true, 'message': "Missing required fields"});
         }
     }
 )

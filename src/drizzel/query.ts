@@ -1,10 +1,14 @@
 import { count, eq } from "drizzle-orm";
 import { db } from "./index";
-import { exec, execTable, event, eventsTable, announcement, announcementTable } from "./schema";
+import { exec, execTable, event, eventsTable, announcement, announcementTable, exec_socials, execSocialsTable } from "./schema";
 
 //execs
 export async function insertExec(_exec : Omit<exec, "id">){
     await db.insert(execTable).values(_exec);
+}
+
+export async function createSocials(_soicals : Omit<exec_socials, "id">) : Promise<exec_socials[]>{
+    return await db.insert(execSocialsTable).values(_soicals).returning();
 }
 
 export async function deleteExec(id: string) : Promise<exec[]>{

@@ -2,12 +2,24 @@ import { sql } from "drizzle-orm";
 import { pgTable, serial, text, uuid, varchar, date, boolean } from "drizzle-orm/pg-core";
 
 export const execTable = pgTable("exec", {
-    id: uuid('id').defaultRandom().primaryKey(),
-    name: text("name").notNull(),
+    id: uuid('id').defaultRandom().primaryKey().notNull(),
+    first_name: text("first_name").notNull(),
+    last_name: text("last_name").notNull(),
+    email: text("email").notNull(),
+    gender: text("gender").notNull(),
+    pronouns: text("pronouns"),
     stream: text("stream").notNull(),
     position: text("position").notNull(),
-    linkedin: text("linkedin"),
+    socialID : uuid("socialID").references(() => execSocialsTable.id),
     profilePic: text("profile pic"),
+    info: text("info").notNull()
+});
+
+export const execSocialsTable = pgTable("Exec_Social_Table", {
+    id: uuid('id').defaultRandom().primaryKey().notNull(),
+    Linkedin: text('Linkedin'),
+    Instagram: text('Instagram'),
+    Twitter: text('twitter')
 });
 
 export const eventsTable = pgTable("events", {
@@ -28,5 +40,6 @@ export const announcementTable = pgTable("announcements", {
 }); 
 
 export type exec = typeof execTable.$inferInsert;
+export type exec_socials = typeof execSocialsTable.$inferInsert;
 export type event = typeof eventsTable.$inferInsert;
 export type announcement = typeof announcementTable.$inferInsert;

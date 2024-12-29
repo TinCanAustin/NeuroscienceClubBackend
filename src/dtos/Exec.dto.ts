@@ -1,9 +1,17 @@
 export interface addExecType{
-    name: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    gender: string,
+    pronouns: string,
     stream: string,
     position: string,
-    linkedin?: string
-    profilePic?: string
+    socialID : string,
+    profilePic?: string,
+    info: string,
+    Linkedin?: string,
+    Instagram?: string,
+    Twitter?: string
 }
 
 export interface idExecParamType{
