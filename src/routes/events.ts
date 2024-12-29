@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { addEventType, idEventParam, addImageType } from "../dtos/event.dot";
 import { event } from "../drizzel/schema";
-import { addEventImage, deleteEvent, getEvent, getEventPhoto, getEvents, insertEvent } from "../drizzel/query";
+import { addEventImage, deleteEvent, getEvent, getEventPhoto, getEvents, insertEvent, updateEvent } from "../drizzel/query";
 
 const eventRouter = Router();
 
@@ -173,6 +173,57 @@ eventRouter.post("/delete/:id",
             res.status(500).json({error: true, message: "Internal error", error_message: err});
         }
     }
-)
+);
+
+eventRouter.post("/update/:id",
+    async (req: Request<idEventParam, {}, addEventType>, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+
+        try{
+            const body = req.body;
+            const _id = req.params.id;
+
+            const event = await getEvent(_id);
+            if(event.length == 0){
+                res.status(400).json({'error': true, 'message': "Event not found"});
+                return;
+            }
+            
+            const {id, eventImage, ...info} = event[0]
+            let eventGet: Omit<Omit<event, "id">, "eventImage">  = info;
+            
+            if("name" in body){
+                eventGet.name = body.name;
+            }
+            if("date" in body){
+                let _date = new Date(body.date);
+                if(_date.toString() == "Invalid Date"){
+                    throw "invalid date formate";
+                };
+                eventGet.date = _date;
+            }
+            if("description" in body){
+                eventGet.description = body.description;
+            }
+            if("status" in body){
+                eventGet.stauts = body.status;
+            }
+            if("bannerURL" in body){
+                eventGet.bannerURL = body.bannerURL;
+            }
+
+            await updateEvent(_id, eventGet);
+
+            res.status(200).json({error: false, message: "event updated"});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({error: true, message: "Internal error", error_message: err});
+        }
+    }
+);
 
 export default eventRouter;

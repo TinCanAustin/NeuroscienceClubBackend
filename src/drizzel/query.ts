@@ -44,6 +44,16 @@ export async function getEvent(_id: string) {
     return await db.select().from(eventsTable).where(eq(eventsTable.id, _id));
 }
 
+export async function updateEvent(_id:string, _event : Omit<Omit<event, "id">, "eventImage">){
+    await db.update(eventsTable).set({
+        name: _event.name,
+        date: _event.date,
+        description: _event.description,
+        stauts: _event.stauts,
+        bannerURL: _event.bannerURL
+    }).where(eq(eventsTable.id, _id));
+}
+
 //announcments
 export async function addAnnouncement(_announcement : Omit<announcement, "id">) {
     await db.insert(announcementTable).values(_announcement);
