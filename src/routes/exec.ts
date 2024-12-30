@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";  
 import { addExecType, idExecParamType } from "../dtos/Exec.dto";
-import { createSocials, deleteExec, getExec, getExecs, insertExec} from "../drizzel/query";
+import { createSocials, deleteExec, getExec, getExecs, getExecSocials, insertExec, updateExecs} from "../drizzel/query";
 import { exec, exec_socials, execTable } from "../drizzel/schema";
 
 const userRouter = Router();
@@ -107,10 +107,98 @@ userRouter
             res.status(200).json({error: false, message: "deleted successfully", deleted_accout : deleted});
         }catch(err){
             console.log(err);
-            res.status(500).json({error: true, message: "Internal error", error_message: err});
+            res.status(500).json({error: true, error_message: err});
         }
     }
 )
+
+// will clean later
+userRouter.post("/update/:id", 
+    async (req : Request<idExecParamType, {}, addExecType>, res : Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+        const body = req.body;
+        const _id = req.params.id
+        try{
+            const exec = await getExec(_id);
+            if( exec.length == 0 ){
+                res.status(400).json({error: true, message: "Exec not found."});
+                return;
+            }
+
+            const {id, socialID, ...info} = exec[0];
+            let updateExec : Omit<Omit<exec, "id">, "socialID"> = info;
+
+            const socials = await getExecSocials(socialID ?? "");
+            if(socials.length == 0){
+                res.status(400).json({error: true, message: "Exec format is incorrect."});
+                return;
+            }
+            
+            let updateSocials : Omit<exec_socials, "id"> = {
+                Instagram : socials[0].Instagram,
+                Twitter : socials[0].Twitter,
+                Linkedin : socials[0].Linkedin
+            }
+            
+            Object.keys(body).forEach(key => {
+                // @ts-ignore
+                if(body[key] !== undefined){
+                    switch(key){
+                        case "first_name":
+                            updateExec.first_name = body.first_name;
+                            break;
+                        case "last_name":
+                            updateExec.last_name = body.last_name;
+                            break;
+                        case "email":
+                            updateExec.email = body.email;
+                            break;
+                        case "gender":
+                            updateExec.gender = body.gender;
+                            break;
+                        case "pronouns":
+                            updateExec.pronouns = body.pronouns;
+                            break;
+                        case "profilePic":
+                            updateExec.profilePic = body.profilePic;
+                            break;
+                        case "info":
+                            updateExec.info = body.info;
+                            break;
+                        case "Linkedin":
+                            updateSocials.Linkedin = body.Linkedin;
+                            break;
+                        case "Instagram":
+                            updateSocials.Instagram = body.Instagram;
+                            break;
+                        case "Twitter":
+                            updateSocials.Twitter = body.Twitter;
+                            break;
+                        case "stream":
+                            updateExec.stream = body.stream;
+                            break;
+                        case "position":
+                            updateExec.position = body.position;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+
+            await updateExecs(_id, socialID ?? "" , updateExec, updateSocials);
+            res.status(200).json({error: false, message: "exec updated"});
+        }catch(err){
+            console.log(err);
+            res.status(500).json({error: true, error_message: err});
+        }
+
+    }
+);
 
 userRouter
 .route("/")

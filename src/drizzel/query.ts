@@ -23,6 +23,31 @@ export async function getExecs() {
     return await db.select().from(execTable);
 }
 
+export async function getExecSocials(id:string) {
+    return await db.select().from(execSocialsTable).where(eq(execSocialsTable.id, id));
+}
+
+export async function updateExecs(_id : string, _socialID : string, _exec : Omit<Omit<exec, "id">, "socialID">, _soicals : Omit<exec_socials, "id">) {
+    await db.update(execTable).set({
+        first_name : _exec.first_name,
+        last_name : _exec.last_name,
+        email : _exec.email,
+        gender : _exec.gender,
+        pronouns : _exec.pronouns,
+        profilePic : _exec.profilePic,
+        info : _exec.info
+    }).where(eq(execTable.id, _id));
+
+
+    await db.update(execSocialsTable).set({
+        Instagram : _soicals.Instagram,
+        Linkedin : _soicals.Linkedin,
+        Twitter : _soicals.Twitter
+    }).where(eq(execSocialsTable.id, _socialID));
+}
+
+
+
 //events 
 export async function insertEvent(_event : Omit<Omit<event, "id">, "eventImage">){
     await db.insert(eventsTable).values(_event);
