@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { announcementAddType, announcementParam } from "../dtos/announemnt.dot";
 import { announcement } from "../drizzel/schema";
-import { addAnnouncement, deleteAnnouncement, getAnnouncement, getAnnouncements } from "../drizzel/query";
+import { addAnnouncement, deleteAnnouncement, getAnnouncement, getAnnouncements, updateAnnouncemnet } from "../drizzel/query";
 
 const announcementRouter = Router();
 
@@ -92,6 +92,47 @@ announcementRouter.post("/delete/:id",
         }catch(err){
             console.log(err);
             res.status(500).json({'error': true, 'message': err})
+        }
+    }
+);
+
+announcementRouter.post("/update/:id",
+    async(req : Request<announcementParam, {}, announcementAddType>, res : Response) =>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(401).json({'error': true, 'message': "No autherization"});
+            return;
+        };
+        const body = req.body;
+        const _id = req.params.id
+        
+        try{
+            const announcements = await getAnnouncement(_id);
+            if(announcements.length == 0){
+                res.status(201).json({'error': true, 'announcements' : "Announcement not found"});
+                throw "No user found";
+            }
+
+            const {id, ...info} = announcements[0];
+            let updateAnnounce : Omit<announcement, "id"> = info;
+
+            if("heading" in body){
+                updateAnnounce.heading = body.heading;
+            }
+            if("body" in body){
+                updateAnnounce.body = body.body;
+            }
+
+            const now = new Date();
+            const _date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            updateAnnounce.date = _date;
+
+            await updateAnnouncemnet(_id, updateAnnounce);
+
+            res.status(200).json({error: false, message: "announcement updated"});
+        }catch(e){
+            console.log(e);
+            res.status(500).json({error: true, error_message: e});
         }
     }
 );

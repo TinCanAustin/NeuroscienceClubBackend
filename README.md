@@ -210,5 +210,5 @@ Example:
 Endpoint to delete exsisting announcemnet into the database. 
 
 **Info**\
-A post request that deletes an exsisting anouncemnts. This endpoint does not take any JSON and returns the deleted announcemnet. \
+A post request that deletes an exsisting anouncemnts. This endpoint does not take any JSON and returns the deleted announcemnet.\
 The `:id` is of type *string*.
