@@ -6,7 +6,6 @@ export const execTable = pgTable("exec", {
     first_name: text("first_name").notNull(),
     last_name: text("last_name").notNull(),
     email: text("email").notNull(),
-    gender: text("gender").notNull(),
     pronouns: text("pronouns"),
     stream: text("stream").notNull(),
     position: text("position").notNull(),

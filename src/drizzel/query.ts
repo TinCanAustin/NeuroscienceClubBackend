@@ -32,7 +32,6 @@ export async function updateExecs(_id : string, _socialID : string, _exec : Omit
         first_name : _exec.first_name,
         last_name : _exec.last_name,
         email : _exec.email,
-        gender : _exec.gender,
         pronouns : _exec.pronouns,
         profilePic : _exec.profilePic,
         info : _exec.info

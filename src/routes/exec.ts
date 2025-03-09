@@ -20,7 +20,6 @@ userRouter
             body.first_name,
             body.last_name,
             body.email,
-            body.gender,
             body.email,
             body.stream,
             body.position,
@@ -34,7 +33,6 @@ userRouter
                 first_name: body.first_name,
                 last_name: body.last_name,
                 email: body.email,
-                gender: body.gender,
                 pronouns: body.pronouns,
                 stream: body.stream,
                 position: body.position,
@@ -156,9 +154,6 @@ userRouter.post("/update/:id",
                             break;
                         case "email":
                             updateExec.email = body.email;
-                            break;
-                        case "gender":
-                            updateExec.gender = body.gender;
                             break;
                         case "pronouns":
                             updateExec.pronouns = body.pronouns;
