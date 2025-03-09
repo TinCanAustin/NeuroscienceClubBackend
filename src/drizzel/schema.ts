@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, serial, text, uuid, varchar, date, boolean } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, uuid, varchar, date, time } from "drizzle-orm/pg-core";
 
 export const execTable = pgTable("exec", {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -25,8 +25,9 @@ export const eventsTable = pgTable("events", {
     id: uuid('id').defaultRandom().primaryKey(),
     name: text('event name').notNull(),
     date: date("date", {mode: "date"}).notNull(),
+    time: time({withTimezone: true}),
+    location: text('location').notNull(),
     description: text("description").notNull(),
-    stauts: boolean("event status").default(sql`FALSE`).notNull(),
     bannerURL: text("banner url").notNull(),
     eventImage: text("images").array().default(sql`ARRAY[]::text[]`).notNull()
 });

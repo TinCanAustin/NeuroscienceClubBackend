@@ -59,21 +59,22 @@ eventRouter.post("/add",
 
         const name = req.body.name;
         const date = req.body.date;
+        const location = req.body.location;
+        const time = req.body.time;
         const description = req.body.description;
-        const status = req.body.status;
         const bannerURL = req.body.bannerURL;
 
-        if(name != undefined && date != undefined && status != undefined && bannerURL != undefined){
+        if(name != undefined && date != undefined && location != undefined && time != undefined && bannerURL != undefined){
             try{
                 let _date = new Date(date);
                 // console.log(_date.toString() == "Invalid Date");
                 // console.log(typeof status == "boolean");
 
-                if(typeof status != "boolean" || _date.toString() == "Invalid Date"){
-                    throw "invalid data type or date formate";
+                if(_date.toString() == "Invalid Date" ||(time.length != 8 || (time[2] != ":" || time[5] != ":"))){
+                    throw "invalid date format or time format";
                 };
 
-                const event: Omit<Omit<event, "id">, "eventImage"> = {name: name, date: _date, stauts: status, bannerURL: bannerURL, description: description || ""};
+                const event: Omit<Omit<event, "id">, "eventImage"> = {name: name, date: _date, location: location, time: time ,bannerURL: bannerURL, description: description || "" };
                 await insertEvent(event);
                 
                 res.status(200).json({error: false, message: "Event added succesfully"});
@@ -202,15 +203,21 @@ eventRouter.post("/update/:id",
             if("date" in body){
                 let _date = new Date(body.date);
                 if(_date.toString() == "Invalid Date"){
-                    throw "invalid date formate";
+                    throw "invalid date format";
                 };
                 eventGet.date = _date;
             }
             if("description" in body){
                 eventGet.description = body.description;
             }
-            if("status" in body){
-                eventGet.stauts = body.status;
+            if("time" in body){
+                if(body.time.length != 8 || (body.time[2] != ":" || body.time[5] != ":")){
+                    throw "invalid time format";
+                }
+                eventGet.time = body.time;
+            }
+            if("location" in body){
+                eventGet.location = body.location;
             }
             if("bannerURL" in body){
                 eventGet.bannerURL = body.bannerURL;

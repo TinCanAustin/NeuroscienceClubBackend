@@ -74,8 +74,9 @@ export async function updateEvent(_id:string, _event : Omit<Omit<event, "id">, "
     await db.update(eventsTable).set({
         name: _event.name,
         date: _event.date,
+        time: _event.time,
+        location: _event.location,
         description: _event.description,
-        stauts: _event.stauts,
         bannerURL: _event.bannerURL
     }).where(eq(eventsTable.id, _id));
 }

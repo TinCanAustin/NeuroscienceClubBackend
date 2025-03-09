@@ -1,8 +1,9 @@
 export interface addEventType{
     name: string,
     date: string,
-    description: string,
-    status: boolean,
+    time: string,
+    location: string,   
+    description: string
     bannerURL: string
 }
 
