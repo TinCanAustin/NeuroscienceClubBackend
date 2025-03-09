@@ -46,8 +46,6 @@ export async function updateExecs(_id : string, _socialID : string, _exec : Omit
     }).where(eq(execSocialsTable.id, _socialID));
 }
 
-
-
 //events 
 export async function insertEvent(_event : Omit<Omit<event, "id">, "eventImage">){
     await db.insert(eventsTable).values(_event);
