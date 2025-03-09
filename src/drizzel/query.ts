@@ -97,3 +97,13 @@ export async function getAnnouncement(id:string) {
 export async function deleteAnnouncement(id:string) {
     return await db.delete(announcementTable).where(eq(announcementTable.id, id)).returning();
 }
+
+export async function updateAnnouncemnet(id:string, _announcement: Omit<announcement, "id">) {
+    await db.update(announcementTable).set(
+        {
+            heading : _announcement.heading,
+            body : _announcement.body,
+            date : _announcement.date
+        }
+    ).where(eq(announcementTable.id, id));
+}
