@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import session from "express-session";
 import path from 'path';
 import { config } from "dotenv";
+import cors from 'cors';
 
 import userRouter from './routes/exec';
 import eventRouter from './routes/events';
@@ -21,6 +22,7 @@ app.use(session({
         maxAge: HOUR_VAR
     }
 }));
+app.use(cors());
 
 app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
