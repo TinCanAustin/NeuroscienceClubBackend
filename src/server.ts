@@ -22,7 +22,10 @@ app.use(session({
         maxAge: HOUR_VAR
     }
 }));
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    credentials: true
+}));
 
 app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
