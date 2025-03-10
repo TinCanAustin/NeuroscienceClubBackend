@@ -12,7 +12,7 @@ authRouter.post("/",
         const username = req.body.username;
         const password = req.body.password;
 
-        if(username != process.env.USERNAME && password != process.env.PASSWORD){
+        if(username != process.env.USERNAME || password != process.env.PASSWORD){
             res.status(401).json({"error" : true, "message" : "invalid username or password"});
             return;
         }
