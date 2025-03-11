@@ -3,6 +3,7 @@ declare namespace NodeJS{
         DATABASE_URL: string,
         USERNAME: string,
         PASSWORD: string,
-        SECRET: string
+        SECRET: string,
+        NODE_ENV: string
     }
 }

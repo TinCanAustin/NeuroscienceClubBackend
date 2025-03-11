@@ -23,7 +23,7 @@ app.use(session({
     }
 }));
 app.use(cors({
-    origin: "*",
+    origin: process.env.NODE_ENV == "production" ? "" : "http://localhost:5173",
     credentials: true
 }));
 
