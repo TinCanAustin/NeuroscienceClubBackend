@@ -14,7 +14,7 @@ config({path: path.join(__dirname, ".env")})
 const HOUR_VAR = 60000 * 60;
 
 app.use(cors({
-    origin: process.env.NODE_ENV == "production" ? "" : "http://localhost:5173",
+    origin: "http://localhost:5173",
     credentials: true
 }));
 app.use(express.json());
