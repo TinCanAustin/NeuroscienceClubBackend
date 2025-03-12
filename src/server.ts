@@ -13,6 +13,8 @@ const app = express();
 config({path: path.join(__dirname, ".env")})
 const HOUR_VAR = 60000 * 60;
 
+console.log("CORS origin:", process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173');
+
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173',
     credentials: true
@@ -26,9 +28,11 @@ app.use(session({
         maxAge: HOUR_VAR,
         httpOnly: true,
         sameSite: "none",
-        secure: process.env.NODE_ENV === 'production'
+        secure: true,
+        domain: 'neuroscienceclubbackend-production.up.railway.app'
     }
 }));
+app.set('trust proxy', 1);
 
 app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
