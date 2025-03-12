@@ -13,10 +13,21 @@ const app = express();
 config({path: path.join(__dirname, ".env")})
 const HOUR_VAR = 60000 * 60;
 
+const allowedOrgin = [
+    "http://localhost:5173",
+    'https://adminlogin.pages.dev'
+]
+
 console.log("CORS origin:", process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173');
 
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if(!origin || allowedOrgin.includes(origin)){
+            callback(null, true);
+        }else{
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
