@@ -13,18 +13,20 @@ const app = express();
 config({path: path.join(__dirname, ".env")})
 const HOUR_VAR = 60000 * 60;
 
+app.use(cors({
+    origin: process.env.NODE_ENV == "production" ? "" : "http://localhost:5173",
+    credentials: true
+}));
 app.use(express.json());
 app.use(session({
     secret: `${process.env.SECRET}`,
     saveUninitialized: false,
     resave: false,
     cookie:{
-        maxAge: HOUR_VAR
+        maxAge: HOUR_VAR,
+        httpOnly: true,
+        sameSite: "none"
     }
-}));
-app.use(cors({
-    origin: process.env.NODE_ENV == "production" ? "" : "http://localhost:5173",
-    credentials: true
 }));
 
 app.get("/", (req : Request, res : Response)=>{
