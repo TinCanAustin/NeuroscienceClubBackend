@@ -7,12 +7,6 @@ const eventRouter = Router();
 
 eventRouter.get('/',
     async (req: Request, res: Response)=>{
-        // @ts-ignore
-        if(!req.session.auth){
-            res.status(401).json({'error': true, 'message': "No autherization"});
-            return;
-        };
-
         try{
             const events = await getEvents();
             if(events.length == 0){

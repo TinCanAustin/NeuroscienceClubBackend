@@ -199,11 +199,6 @@ userRouter
 .route("/")
 .get(
     async (req: Request, res: Response)=>{
-        // @ts-ignore
-        if(!req.session.auth){
-            res.status(401).json({'error': true, 'message': "No autherization"});
-            return;
-        };
         try{
             const execs = await getExecs();
             if(execs.length == 0){
