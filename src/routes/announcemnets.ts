@@ -72,7 +72,7 @@ announcementRouter.post('/add',
     }
 )
 
-announcementRouter.post("/delete/:id", 
+announcementRouter.delete("/delete/:id", 
     async (req: Request<announcementParam>, res: Response)=>{
         // @ts-ignore
         if(!req.session.auth){

@@ -150,7 +150,7 @@ eventRouter
     }
 );
 
-eventRouter.post("/delete/:id", 
+eventRouter.delete("/delete/:id", 
     async (req: Request<idEventParam>, res: Response)=>{
         // @ts-ignore
         if(!req.session.auth){
