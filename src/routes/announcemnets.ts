@@ -7,11 +7,6 @@ const announcementRouter = Router();
 
 announcementRouter.get("/", 
     async (req: Request, res: Response)=>{
-        // @ts-ignore
-        if(!req.session.auth){
-            res.status(401).json({'error': true, 'message': "No autherization"});
-            return;
-        };
         try{
             const announcements = await getAnnouncements();
             res.status(200).json({'error': false, 'announcements' : announcements});
@@ -72,7 +67,7 @@ announcementRouter.post('/add',
     }
 )
 
-announcementRouter.post("/delete/:id", 
+announcementRouter.delete("/delete/:id", 
     async (req: Request<announcementParam>, res: Response)=>{
         // @ts-ignore
         if(!req.session.auth){

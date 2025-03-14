@@ -13,19 +13,37 @@ const app = express();
 config({path: path.join(__dirname, ".env")})
 const HOUR_VAR = 60000 * 60;
 
+const allowedOrgin = [
+    "http://localhost:5173",
+    'https://adminlogin.pages.dev'
+]
+
+console.log("CORS origin:", process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173');
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if(!origin || allowedOrgin.includes(origin)){
+            callback(null, true);
+        }else{
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
+    credentials: true
+}));
 app.use(express.json());
 app.use(session({
     secret: `${process.env.SECRET}`,
     saveUninitialized: false,
     resave: false,
     cookie:{
-        maxAge: HOUR_VAR
+        maxAge: HOUR_VAR,
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        domain: 'neuroscienceclubbackend-production.up.railway.app'
     }
 }));
-app.use(cors({
-    origin: process.env.NODE_ENV == "production" ? "" : "http://localhost:5173",
-    credentials: true
-}));
+app.set('trust proxy', 1);
 
 app.get("/", (req : Request, res : Response)=>{
     res.sendFile(path.join(__dirname, "view", "index.html"));
