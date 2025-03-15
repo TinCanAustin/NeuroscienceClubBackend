@@ -23,4 +23,15 @@ authRouter.post("/",
     }
 );
 
+authRouter.get("/validate", 
+    (req: Request, res: Response)=>{
+        // @ts-ignore
+        if(!req.session.auth){
+            res.status(200).json({'error': false, 'valid': false});
+            return;
+        };
+        res.status(200).json({'error': false, 'valid': true});
+    }
+);
+
 export default authRouter;
