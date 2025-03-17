@@ -1,6 +1,7 @@
 export interface announcementAddType{
     heading : string,
-    body: string
+    body: string,
+    url?: string
 }
 
 export interface announcementParam{

@@ -36,6 +36,7 @@ export const announcementTable = pgTable("announcements", {
     id: uuid('id').defaultRandom().primaryKey(),
     heading: text('heading').notNull(),
     date: date("date", {mode: "date"}).notNull(),
+    url: text("url"),
     body: text("body").notNull()
 }); 
 

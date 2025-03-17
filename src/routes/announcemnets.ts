@@ -56,6 +56,11 @@ announcementRouter.post('/add',
                 const _date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
                 const announcement : Omit<announcement, "id"> = {heading : heading, date: _date ,body : body};
+
+                if(req.body.url != undefined){
+                    announcement.url = req.body.url;
+                }
+                
                 await addAnnouncement(announcement);
 
                 res.status(200).json({'error': false, 'message' : 'announcement added'})
@@ -99,7 +104,7 @@ announcementRouter.post("/update/:id",
             return;
         };
         const body = req.body;
-        const _id = req.params.id
+        const _id = req.params.id;
         
         try{
             const announcements = await getAnnouncement(_id);
@@ -116,6 +121,9 @@ announcementRouter.post("/update/:id",
             }
             if("body" in body){
                 updateAnnounce.body = body.body;
+            }
+            if("url" in body){
+                updateAnnounce.url = body.url;
             }
 
             const now = new Date();
