@@ -40,7 +40,16 @@ export const announcementTable = pgTable("announcements", {
     body: text("body").notNull()
 }); 
 
+export const formTable = pgTable("form", {
+    id: uuid('id').defaultRandom().primaryKey(),
+    first_name: text("first_name").notNull(),
+    last_name: text("last_name").notNull(),
+    email: text("email").notNull(),
+    body: text("body").notNull()
+});
+
 export type exec = typeof execTable.$inferInsert;
 export type exec_socials = typeof execSocialsTable.$inferInsert;
 export type event = typeof eventsTable.$inferInsert;
 export type announcement = typeof announcementTable.$inferInsert;
+export type form = typeof formTable.$inferInsert;

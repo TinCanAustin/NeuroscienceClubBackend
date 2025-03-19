@@ -8,6 +8,7 @@ import userRouter from './routes/exec';
 import eventRouter from './routes/events';
 import announcementRouter from './routes/announcemnets';
 import authRouter from './routes/auth';
+import userForm from './routes/form';
 
 const app = express();
 config({path: path.join(__dirname, ".env")})
@@ -53,6 +54,7 @@ app.use('/auth', authRouter);
 app.use('/execs', userRouter);
 app.use('/events', eventRouter);
 app.use('/announcement', announcementRouter);
+app.use('/form', userForm);
 
 app.listen(3000, ()=>{
     console.log("Ola camosa");

@@ -1,6 +1,6 @@
 import { count, eq } from "drizzle-orm";
 import { db } from "./index";
-import { exec, execTable, event, eventsTable, announcement, announcementTable, exec_socials, execSocialsTable } from "./schema";
+import { exec, execTable, event, eventsTable, announcement, announcementTable, exec_socials, execSocialsTable, form, formTable } from "./schema";
 
 //execs
 export async function insertExec(_exec : Omit<exec, "id">){
@@ -106,4 +106,17 @@ export async function updateAnnouncemnet(id:string, _announcement: Omit<announce
             date : _announcement.date
         }
     ).where(eq(announcementTable.id, id));
+}
+
+//form
+export async function addUserForm(_form : Omit<form, "id">){
+    await db.insert(formTable).values(_form);
+}
+
+export async function getUserForm(){
+    return await db.select().from(formTable);
+}
+
+export async function deleteUserForm(id:string){
+    return await db.delete(formTable).where(eq(formTable.id, id)).returning();
 }
