@@ -4,6 +4,9 @@ declare namespace NodeJS{
         USERNAME: string,
         PASSWORD: string,
         SECRET: string,
-        NODE_ENV: string
+        NODE_ENV: string,
+        EMAILJS_PUBLIC: string,
+        TEMPLATE_ID: string,
+        SERVICE_ID: string
     }
 }

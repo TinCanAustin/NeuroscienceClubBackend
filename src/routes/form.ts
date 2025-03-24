@@ -1,39 +1,43 @@
-import { Response, Request, Router } from "express";
+import { Response, Request, Router, response } from "express";
 import { userFormAdd, formParam } from "../dtos/userForm.dot";
-import { form } from "../drizzel/schema";
-import { addUserForm, getUserForm, deleteUserForm } from "../drizzel/query";
+import { config } from "dotenv";
+import path from 'path';
+
+config({path: path.resolve(__dirname, "../.env")});
 
 const userForm = Router();
 
-userForm.get("/", 
-    async (req: Request, res: Response) => {
-        try{
-            const userForms = await getUserForm();
-            res.status(200).json({'error': false, 'userForms': userForms});
-        }catch(err){
-            console.log(err);
-            res.status(500).json({'error': true, 'message': 'internal error'});
-        }
-    }
-);
-
 userForm.post("/send", 
     async (req: Request<{}, {}, userFormAdd>, res: Response)=>{
-        const first_name = req.body.first_name;
-        const last_name = req.body.last_name;
-        const email = req.body.email;
-        const body = req.body.body;
-        
-        if(first_name != undefined && last_name != undefined && email != undefined && body != undefined){
-            try{
-                const userFormContent : Omit<form, "id"> = {
-                    first_name: first_name,
-                    last_name: last_name,
-                    email: email,
-                    body: body
-                };
+        if(req.body.first_name != undefined && req.body.last_name != undefined && req.body.email != undefined && req.body.body != undefined){
+            const form : Record<string, string> = {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                email: req.body.email,
+                body: req.body.body
+            };
+            const url = req.protocol + "://" + req.get('host')
 
-                await addUserForm(userFormContent);
+            try{
+                const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                        'Origin': url,
+                        'Referer': `${url}form/send`,
+                    },
+                    body: JSON.stringify({
+                        service_id: process.env.SERVICE_ID,
+                        template_id: process.env.TEMPLATE_ID,
+                        user_id: process.env.EMAILJS_PUBLIC,
+                        template_params: form
+                    }),
+                });
+
+                if(!response.ok){
+                    throw await response.text();
+                }
 
                 res.status(200).json({'error': false, 'message' : 'form sent'});
             }catch(err){
@@ -42,32 +46,6 @@ userForm.post("/send",
             }
         }else{
             res.status(400).json({'error': true, 'message': "Missing required fields"});
-        }
-    }
-);
-
-userForm.delete("/delete/:id", 
-    async (req: Request<formParam>, res: Response)=>{
-        // @ts-ignore
-        if(!req.session.auth){
-            res.status(401).json({'error': true, 'message': "No autherization"});
-            return;
-        };
-
-        try{
-            const form_id = req.params.id;
-
-            const deleted = await deleteUserForm(form_id);
-
-            if(deleted.length == 0){
-                res.status(400).json({'error': true, 'message': "Form not found."});
-                return;
-            }
-
-            res.status(200).json({'error': false, message: "deleted successfully", delete_userFrom : deleted[0]});
-        }catch(err){
-            console.log(err);
-            res.status(500).json({'error': true, 'message': "internal error"});
         }
     }
 );
