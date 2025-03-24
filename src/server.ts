@@ -16,7 +16,8 @@ const HOUR_VAR = 60000 * 60;
 
 const allowedOrgin = [
     "http://localhost:5173",
-    'https://adminlogin.pages.dev'
+    'https://adminlogin.pages.dev',
+    "https://sfuneuraxtension.pages.dev/"
 ]
 
 console.log("CORS origin:", process.env.NODE_ENV === 'production' ? 'https://adminlogin.pages.dev' : 'http://localhost:5173');
