@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";  
 import { addExecType, idExecParamType } from "../dtos/Exec.dto";
-import { createSocials, deleteExec, getExec, getExecs, getExecSocials, insertExec, updateExecs} from "../drizzel/query";
-import { exec, exec_socials, execTable } from "../drizzel/schema";
+import { deleteExec, getExec, getExecs,  insertExec, updateExecs} from "../drizzel/query";
+import { exec, execTable } from "../drizzel/schema";
 
 const userRouter = Router();
 
@@ -19,11 +19,7 @@ userRouter
         const requiredKeys = [
             body.first_name,
             body.last_name,
-            body.email,
-            body.email,
-            body.stream,
             body.position,
-            body.info,
         ];
         const keyCheck = requiredKeys.every(key => key !== undefined);
 
@@ -32,31 +28,18 @@ userRouter
             let newExec : Omit<exec, "id"> = {
                 first_name: body.first_name,
                 last_name: body.last_name,
-                email: body.email,
-                pronouns: body.pronouns,
-                stream: body.stream,
                 position: body.position,
-                info: body.info
             };
 
             if(body.profilePic !== undefined){
                 newExec.profilePic = body.profilePic;
             }
-            
-            let socials : Omit<exec_socials, "id"> = {};
-            if(body.Linkedin !== undefined){
-                socials.Linkedin = body.Linkedin;
-            }
-            if(body.Instagram !== undefined){
-                socials.Instagram = body.Instagram;
-            }
-            if(body.Twitter !== undefined){
-                socials.Twitter = body.Twitter;
-            }
 
+            if(body.social !== undefined){
+                newExec.social = body.social;
+            }
+            
             try{
-                let socialReturn = await createSocials(socials);
-                newExec.socialID = socialReturn[0].id;
                 await insertExec(newExec);
                 res.status(200).json({'error': false, 'message': "added sucessfully"});
             }catch (err){
@@ -127,20 +110,8 @@ userRouter.post("/update/:id",
                 return;
             }
 
-            const {id, socialID, ...info} = exec[0];
+            const {id, ...info} = exec[0];
             let updateExec : Omit<Omit<exec, "id">, "socialID"> = info;
-
-            const socials = await getExecSocials(socialID ?? "");
-            if(socials.length == 0){
-                res.status(400).json({error: true, message: "Exec format is incorrect."});
-                return;
-            }
-            
-            let updateSocials : Omit<exec_socials, "id"> = {
-                Instagram : socials[0].Instagram,
-                Twitter : socials[0].Twitter,
-                Linkedin : socials[0].Linkedin
-            }
             
             Object.keys(body).forEach(key => {
                 // @ts-ignore
@@ -152,32 +123,14 @@ userRouter.post("/update/:id",
                         case "last_name":
                             updateExec.last_name = body.last_name;
                             break;
-                        case "email":
-                            updateExec.email = body.email;
-                            break;
-                        case "pronouns":
-                            updateExec.pronouns = body.pronouns;
-                            break;
                         case "profilePic":
                             updateExec.profilePic = body.profilePic;
-                            break;
-                        case "info":
-                            updateExec.info = body.info;
-                            break;
-                        case "Linkedin":
-                            updateSocials.Linkedin = body.Linkedin;
-                            break;
-                        case "Instagram":
-                            updateSocials.Instagram = body.Instagram;
-                            break;
-                        case "Twitter":
-                            updateSocials.Twitter = body.Twitter;
-                            break;
-                        case "stream":
-                            updateExec.stream = body.stream;
-                            break;
+                            break;                       
                         case "position":
                             updateExec.position = body.position;
+                            break;
+                        case "social":
+                            updateExec.social = body.social;
                             break;
                         default:
                             break;
@@ -185,7 +138,7 @@ userRouter.post("/update/:id",
                 }
             });
 
-            await updateExecs(_id, socialID ?? "" , updateExec, updateSocials);
+            await updateExecs(_id, updateExec);
             res.status(200).json({error: false, message: "exec updated"});
         }catch(err){
             console.log(err);

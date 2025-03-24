@@ -1,14 +1,10 @@
 import { count, eq } from "drizzle-orm";
 import { db } from "./index";
-import { exec, execTable, event, eventsTable, announcement, announcementTable, exec_socials, execSocialsTable, form, formTable } from "./schema";
+import { exec, execTable, event, eventsTable, announcement, announcementTable, form, formTable } from "./schema";
 
 //execs
 export async function insertExec(_exec : Omit<exec, "id">){
     await db.insert(execTable).values(_exec);
-}
-
-export async function createSocials(_soicals : Omit<exec_socials, "id">) : Promise<exec_socials[]>{
-    return await db.insert(execSocialsTable).values(_soicals).returning();
 }
 
 export async function deleteExec(id: string) : Promise<exec[]>{
@@ -23,26 +19,20 @@ export async function getExecs() {
     return await db.select().from(execTable);
 }
 
-export async function getExecSocials(id:string) {
-    return await db.select().from(execSocialsTable).where(eq(execSocialsTable.id, id));
-}
-
-export async function updateExecs(_id : string, _socialID : string, _exec : Omit<Omit<exec, "id">, "socialID">, _soicals : Omit<exec_socials, "id">) {
+export async function updateExecs(_id : string, _exec : Omit<Omit<exec, "id">, "socialID">) {
     await db.update(execTable).set({
         first_name : _exec.first_name,
         last_name : _exec.last_name,
-        email : _exec.email,
-        pronouns : _exec.pronouns,
+        social: _exec.social,
         profilePic : _exec.profilePic,
-        info : _exec.info
     }).where(eq(execTable.id, _id));
 
 
-    await db.update(execSocialsTable).set({
-        Instagram : _soicals.Instagram,
-        Linkedin : _soicals.Linkedin,
-        Twitter : _soicals.Twitter
-    }).where(eq(execSocialsTable.id, _socialID));
+    // await db.update(execSocialsTable).set({
+    //     Instagram : _soicals.Instagram,
+    //     Linkedin : _soicals.Linkedin,
+    //     Twitter : _soicals.Twitter
+    // }).where(eq(execSocialsTable.id, _socialID));
 }
 
 //events 

@@ -5,21 +5,17 @@ export const execTable = pgTable("exec", {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
     first_name: text("first_name").notNull(),
     last_name: text("last_name").notNull(),
-    email: text("email").notNull(),
-    pronouns: text("pronouns"),
-    stream: text("stream").notNull(),
+    social: text("social"),
     position: text("position").notNull(),
-    socialID : uuid("socialID").references(() => execSocialsTable.id),
     profilePic: text("profile pic"),
-    info: text("info").notNull()
 });
 
-export const execSocialsTable = pgTable("Exec_Social_Table", {
-    id: uuid('id').defaultRandom().primaryKey().notNull(),
-    Linkedin: text('Linkedin'),
-    Instagram: text('Instagram'),
-    Twitter: text('twitter')
-});
+// export const execSocialsTable = pgTable("Exec_Social_Table", {
+//     id: uuid('id').defaultRandom().primaryKey().notNull(),
+//     Linkedin: text('Linkedin'),
+//     Instagram: text('Instagram'),
+//     Twitter: text('twitter')
+// });
 
 export const eventsTable = pgTable("events", {
     id: uuid('id').defaultRandom().primaryKey(),
@@ -49,7 +45,7 @@ export const formTable = pgTable("form", {
 });
 
 export type exec = typeof execTable.$inferInsert;
-export type exec_socials = typeof execSocialsTable.$inferInsert;
+// export type exec_socials = typeof execSocialsTable.$inferInsert;
 export type event = typeof eventsTable.$inferInsert;
 export type announcement = typeof announcementTable.$inferInsert;
 export type form = typeof formTable.$inferInsert;
