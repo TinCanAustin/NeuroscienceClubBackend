@@ -23,16 +23,10 @@ export async function updateExecs(_id : string, _exec : Omit<Omit<exec, "id">, "
     await db.update(execTable).set({
         first_name : _exec.first_name,
         last_name : _exec.last_name,
+        position: _exec.position,
         social: _exec.social,
         profilePic : _exec.profilePic,
     }).where(eq(execTable.id, _id));
-
-
-    // await db.update(execSocialsTable).set({
-    //     Instagram : _soicals.Instagram,
-    //     Linkedin : _soicals.Linkedin,
-    //     Twitter : _soicals.Twitter
-    // }).where(eq(execSocialsTable.id, _socialID));
 }
 
 //events 
